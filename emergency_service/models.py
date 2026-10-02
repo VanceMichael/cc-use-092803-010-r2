@@ -49,3 +49,22 @@ class AuditEntry:
     request_id: str
     detail: dict[str, Any]
     created_at: datetime
+
+@dataclass
+class JointPlanStep:
+    step_id: str
+    title: str
+    priority: int
+    event_id: str | None = None
+    assignment_id: str | None = None
+    team_id: str | None = None
+    crew: int = 1
+    lots: dict[str, int] = field(default_factory=dict)
+    dependencies: set[str] = field(default_factory=set)
+
+@dataclass
+class JointPlan:
+    plan_id: str
+    region: str
+    event_ids: list[str]
+    steps: list[JointPlanStep] = field(default_factory=list)
