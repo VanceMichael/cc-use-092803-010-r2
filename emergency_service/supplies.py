@@ -40,3 +40,19 @@ class SupplyLedger:
         lot.frozen = True
         self.audit.append("freeze_supply", "lot", lot_id, request_id, {})
         return lot
+
+    def unfreeze(self, lot_id, request_id):
+        lot = self.get(lot_id)
+        lot.frozen = False
+        self.audit.append("unfreeze_supply", "lot", lot_id, request_id, {})
+        return lot
+
+    def consume_reserved(self, lot_id, amount, request_id):
+        """步骤完成后把已锁定的物资正式核销：预留量与库存量同时减少。"""
+        lot = self.get(lot_id)
+        if amount <= 0 or amount > lot.reserved:
+            raise ValueError("消耗量必须在已锁定数量内")
+        lot.reserved -= amount
+        lot.quantity -= amount
+        self.audit.append("consume_supply", "lot", lot_id, request_id, {"amount": amount})
+        return lot.quantity

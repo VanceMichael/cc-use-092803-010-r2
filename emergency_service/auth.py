@@ -9,7 +9,7 @@ class Principal:
 
 ROLE_ACTIONS = {
     "dispatcher": {"assign", "release", "plan"},
-    "commander": {"close", "escalate", "freeze", "plan"},
+    "commander": {"close", "escalate", "freeze", "plan", "joint_plan"},
     "auditor": {"read_audit", "read"},
     "warehouse": {"reserve", "release", "read"},
 }
